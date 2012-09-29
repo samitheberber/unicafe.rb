@@ -25,6 +25,10 @@ module Unicafe
       21 => "Viikuna",
     }
 
+    def self.find_by_id id
+      self.new id
+    end
+
     def self.find_by_name name
       self.find_by_id self.name_to_id(name)
     end
