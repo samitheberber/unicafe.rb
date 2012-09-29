@@ -25,6 +25,14 @@ module Unicafe
       21 => "Viikuna",
     }
 
+    def initialize id
+      @id = id
+    end
+
+    def name
+      @name ||= LIST_OF_RESTAURANTS[@id]
+    end
+
     def self.find_by_id id
       self.new id
     end

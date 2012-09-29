@@ -72,4 +72,15 @@ describe Unicafe::Restaurant do
 
   end
 
+  context "instance" do
+
+    let!(:restaurant) {Unicafe::Restaurant.new(id)}
+
+    it "should should have correct name" do
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(name)
+      restaurant.name.should == name
+    end
+
+  end
+
 end
