@@ -1,5 +1,10 @@
 require "unicafe/version"
+require "unicafe/restaurant"
 
 module Unicafe
-  # Your code goes here...
+
+  def self.get_restaurant name
+    ::Unicafe::Restaurant.new name
+  end
+
 end
