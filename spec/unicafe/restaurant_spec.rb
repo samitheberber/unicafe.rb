@@ -75,10 +75,16 @@ describe Unicafe::Restaurant do
   context "instance" do
 
     let!(:restaurant) {Unicafe::Restaurant.new(id)}
+    let(:lunches_mock) {[mock(Unicafe::Lunch)]}
 
-    it "should should have correct name" do
+    it "should have correct name" do
       Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(name)
       restaurant.name.should == name
+    end
+
+    it "should give lunches" do
+      Unicafe::Lunch.should_receive(:lunches_for_restaurant).with(id).and_return(lunches_mock)
+      restaurant.lunches.should == lunches_mock
     end
 
   end

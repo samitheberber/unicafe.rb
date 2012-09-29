@@ -33,6 +33,10 @@ module Unicafe
       @name ||= LIST_OF_RESTAURANTS[@id]
     end
 
+    def lunches
+      ::Unicafe::Lunch.lunches_for_restaurant(@id)
+    end
+
     def self.find_by_id id
       self.new id
     end

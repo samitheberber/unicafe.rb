@@ -1,4 +1,5 @@
 require "unicafe/version"
+require "unicafe/lunch"
 require "unicafe/restaurant"
 
 module Unicafe
