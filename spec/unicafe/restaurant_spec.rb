@@ -19,15 +19,10 @@ describe Unicafe::Restaurant do
 
   describe "#name_to_id" do
 
-    let(:exactum) { {id: 11, name: "Exactum"} }
-    let(:chemicum) { {id: 10, name: "Chemicum"} }
-
-    it "should give correct id for Exactum" do
-      Unicafe::Restaurant.name_to_id(exactum[:name]).should == exactum[:id]
-    end
-
-    it "should give correct id for Chemicum" do
-      Unicafe::Restaurant.name_to_id(chemicum[:name]).should == chemicum[:id]
+    it "should give correct id for given restaurant" do
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.each do |id, name|
+        Unicafe::Restaurant.name_to_id(name).should == id
+      end
     end
 
     it "should raise error when unknown name is given" do
