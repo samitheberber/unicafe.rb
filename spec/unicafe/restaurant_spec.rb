@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe Unicafe::Restaurant do
@@ -27,6 +29,40 @@ describe Unicafe::Restaurant do
 
     it "should raise error when unknown name is given" do
       expect{ Unicafe::Restaurant.name_to_id("This restaurant doesn't exist") }.to raise_error(Unicafe::Restaurant::NotFound)
+    end
+
+  end
+
+  describe Unicafe::Restaurant::LIST_OF_RESTAURANTS do
+
+    def check_id_name_pairs id, name
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS[id].should == name
+    end
+
+    it "should contain all defined pairs" do
+      [
+        {id: 1, name: "Metsätalo"},
+        {id: 2, name: "Olivia"},
+        {id: 3, name: "Porthania"},
+        {id: 4, name: "Päärakennus"},
+        {id: 5, name: "Rotunda"},
+        {id: 6, name: "Topelias"},
+        {id: 7, name: "Valtiotiede"},
+        {id: 8, name: "Ylioppilasaukio"},
+        {id: 10, name: "Chemicum"},
+        {id: 11, name: "Exactum"},
+        {id: 12, name: "Physicum"},
+        {id: 13, name: "Meilahti"},
+        {id: 14, name: "Ruskeasuo"},
+        {id: 15, name: "Soc & kom"},
+        {id: 16, name: "Kookos"},
+        {id: 17, name: "Valdemar"},
+        {id: 18, name: "Biokeskus"},
+        {id: 19, name: "Korona"},
+        {id: 21, name: "Viikuna"},
+      ].each do |hash|
+        check_id_name_pairs hash[:id], hash[:name]
+      end
     end
 
   end
