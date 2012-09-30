@@ -12,5 +12,9 @@ module Unicafe
       self.format_data parsed_data
     end
 
+    def self.format_data data
+      data.entries.map{|date| self.format_lunches_of_date(date)}.flatten.compact
+    end
+
   end
 end
