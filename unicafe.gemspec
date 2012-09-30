@@ -15,6 +15,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Unicafe::VERSION
 
+  gem.add_dependency 'feedzirra'
+
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'fakeweb'
 end
