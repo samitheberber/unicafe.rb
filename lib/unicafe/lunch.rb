@@ -16,5 +16,12 @@ module Unicafe
       data.entries.map{|date| self.format_lunches_of_date(date)}.flatten.compact
     end
 
+    def self.format_lunches_of_date data
+      date = self.parse_date data.title
+      Nokogiri::HTML::DocumentFragment.parse(data.summary).children.map{ |lunch|
+        self.format_lunch date, lunch
+      }
+    end
+
   end
 end
