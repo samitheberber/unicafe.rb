@@ -15,7 +15,7 @@ describe Unicafe::Lunch do
   let(:date) {mock(Date)}
   let(:lunch_html_mock) {mock(Nokogiri::XML::Element)}
   let(:name) {"fish & chips (VL)"}
-  let(:price) {"Edullisesti 2,60€"}
+  let(:price) {"2.60"}
   let(:text_element_mock) {mock(Nokogiri::XML::Text)}
   let(:span_mock) {mock(Nokogiri::XML::Element)}
   let(:spans_mock) {[span_mock]}
@@ -73,11 +73,15 @@ describe Unicafe::Lunch do
   end
 
   it "should format price" do
+    price_string = "Edullisesti"
+    price_parser = mock(Unicafe::PriceParser)
     lunch_html_mock.should_receive(:children).and_return(spans_mock)
     span_mock.should_receive(:name).and_return('span')
     span_mock.should_receive(:[]).with(:class).and_return('priceinfo')
     span_mock.should_receive(:children).and_return([text_element_mock])
-    text_element_mock.should_receive(:to_s).and_return(price)
+    text_element_mock.should_receive(:to_s).and_return(price_string)
+    Unicafe::PriceParser.should_receive(:new).and_return(price_parser)
+    price_parser.should_receive(:parse).with(price_string).and_return(price)
     Unicafe::Lunch.format_price(lunch_html_mock).should == price
   end
 

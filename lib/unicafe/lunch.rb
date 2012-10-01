@@ -52,7 +52,8 @@ module Unicafe
     def self.format_price data
       name_span = data.children.select{|elem| elem.name == 'span' && elem[:class] == "priceinfo"}.first
       text_element = name_span.children.first
-      text_element.to_s
+      parser = ::Unicafe::PriceParser.new
+      parser.parse text_element.to_s
     end
 
   end
