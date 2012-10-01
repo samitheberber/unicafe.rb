@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe Unicafe::Lunch do
@@ -13,6 +15,10 @@ describe Unicafe::Lunch do
   let(:date) {mock(Date)}
   let(:lunch_html_mock) {mock(Nokogiri::XML::Element)}
   let(:name) {"fish & chips (VL)"}
+  let(:price) {"Edullisesti 2,60€"}
+  let(:text_element_mock) {mock(Nokogiri::XML::Text)}
+  let(:span_mock) {mock(Nokogiri::XML::Element)}
+  let(:spans_mock) {[span_mock]}
 
   it "should fetch lunches according restaurant" do
     FakeWeb.register_uri(:get, menu_uri, body: restaurant_data)
@@ -46,10 +52,9 @@ describe Unicafe::Lunch do
   end
 
   it "should format lunch with date and data" do
-    description = "fish, potatoes"
     Unicafe::Lunch.should_receive(:format_name).with(lunch_html_mock).and_return(name)
-    Unicafe::Lunch.should_receive(:format_description).with(lunch_html_mock).and_return(description)
-    Unicafe::Lunch.should_receive(:new).with(name, description, date).and_return(lunch_mock)
+    Unicafe::Lunch.should_receive(:format_price).with(lunch_html_mock).and_return(price)
+    Unicafe::Lunch.should_receive(:new).with(name, price, date).and_return(lunch_mock)
     Unicafe::Lunch.format_lunch(date, lunch_html_mock).should == lunch_mock
   end
 
@@ -59,15 +64,21 @@ describe Unicafe::Lunch do
   end
 
   it "should format name" do
-    text_element_mock = mock(Nokogiri::XML::Text)
-    span_mock = mock(Nokogiri::XML::Element)
-    spans_mock = [span_mock]
     lunch_html_mock.should_receive(:children).and_return(spans_mock)
     span_mock.should_receive(:name).and_return('span')
     span_mock.should_receive(:[]).with(:class).and_return('meal')
     span_mock.should_receive(:children).and_return([text_element_mock])
     text_element_mock.should_receive(:to_s).and_return(name)
     Unicafe::Lunch.format_name(lunch_html_mock).should == name
+  end
+
+  it "should format description" do
+    lunch_html_mock.should_receive(:children).and_return(spans_mock)
+    span_mock.should_receive(:name).and_return('span')
+    span_mock.should_receive(:[]).with(:class).and_return('priceinfo')
+    span_mock.should_receive(:children).and_return([text_element_mock])
+    text_element_mock.should_receive(:to_s).and_return(price)
+    Unicafe::Lunch.format_price(lunch_html_mock).should == price
   end
 
 end

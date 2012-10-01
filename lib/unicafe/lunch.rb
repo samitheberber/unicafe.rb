@@ -26,7 +26,7 @@ module Unicafe
     end
 
     def self.format_lunch date, data
-      self.new self.format_name(data), self.format_description(data), date
+      self.new self.format_name(data), self.format_price(data), date
     end
 
     def self.parse_date date
@@ -36,6 +36,12 @@ module Unicafe
 
     def self.format_name data
       name_span = data.children.select{|elem| elem.name == 'span' && elem[:class] == "meal"}.first
+      text_element = name_span.children.first
+      text_element.to_s
+    end
+
+    def self.format_price data
+      name_span = data.children.select{|elem| elem.name == 'span' && elem[:class] == "priceinfo"}.first
       text_element = name_span.children.first
       text_element.to_s
     end
