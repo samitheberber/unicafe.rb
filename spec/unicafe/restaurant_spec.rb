@@ -76,15 +76,28 @@ describe Unicafe::Restaurant do
 
     let!(:restaurant) {Unicafe::Restaurant.new(id)}
     let(:lunches_mock) {[mock(Unicafe::Lunch)]}
+    let(:latitude) {1.234}
+    let(:longitude) {1.234}
+    let(:hash) {{name: name, latitude: latitude, longitude: longitude}}
 
     it "should have correct name" do
-      Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(name)
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(hash)
       restaurant.name.should == name
     end
 
     it "should give lunches" do
       Unicafe::Lunch.should_receive(:lunches_for_restaurant).with(id).and_return(lunches_mock)
       restaurant.lunches.should == lunches_mock
+    end
+
+    it "should give latitude" do
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(hash)
+      restaurant.latitude.should == latitude
+    end
+
+    it "should give longitude" do
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.should_receive(:[]).with(id).and_return(hash)
+      restaurant.longitude.should == longitude
     end
 
   end

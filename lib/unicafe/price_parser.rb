@@ -5,6 +5,7 @@ module Unicafe
 
     MAUKKAASTI = '4.20'
     EDULLISESTI = '2.60'
+    KEVYESTI = '2.30'
 
     def parse price_string
       case price_string
@@ -12,6 +13,8 @@ module Unicafe
         MAUKKAASTI
       when 'Edullisesti'
         EDULLISESTI
+      when 'Kevyesti'
+        KEVYESTI
       when /^Makeasti (.*)$/
         price_string.match(/([,0-9]+)/)[0].gsub(',','.')
       else

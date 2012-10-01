@@ -30,7 +30,15 @@ module Unicafe
     end
 
     def name
-      @name ||= LIST_OF_RESTAURANTS[@id]
+      @name ||= LIST_OF_RESTAURANTS[@id][:name]
+    end
+
+    def latitude
+      @latitude ||= LIST_OF_RESTAURANTS[@id][:latitude]
+    end
+
+    def longitude
+      @longitude ||= LIST_OF_RESTAURANTS[@id][:longitude]
     end
 
     def lunches

@@ -14,6 +14,10 @@ describe Unicafe::PriceParser do
     parser.parse("Edullisesti").should == Unicafe::PriceParser::EDULLISESTI
   end
 
+  it "should replace kevyesti with correct value" do
+    parser.parse("Kevyesti").should == Unicafe::PriceParser::KEVYESTI
+  end
+
   it "should replace makeasti with one value" do
     parser.parse("Makeasti 1,20€").should == '1.20'
   end
