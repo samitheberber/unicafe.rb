@@ -12,6 +12,7 @@ describe Unicafe::Lunch do
   let(:entries_mock) {[entry_mock]}
   let(:date) {mock(Date)}
   let(:lunch_html_mock) {mock(Nokogiri::XML::Element)}
+  let(:name) {"fish & chips (VL)"}
 
   it "should fetch lunches according restaurant" do
     FakeWeb.register_uri(:get, menu_uri, body: restaurant_data)
@@ -45,7 +46,6 @@ describe Unicafe::Lunch do
   end
 
   it "should format lunch with date and data" do
-    name = "fish & chips (VL)"
     description = "fish, potatoes"
     Unicafe::Lunch.should_receive(:format_name).with(lunch_html_mock).and_return(name)
     Unicafe::Lunch.should_receive(:format_description).with(lunch_html_mock).and_return(description)
@@ -56,6 +56,18 @@ describe Unicafe::Lunch do
   it "should parse date" do
     date_string = "Maanantai 24.09.2012"
     Unicafe::Lunch.parse_date(date_string).to_s.should == "2012-09-24"
+  end
+
+  it "should format name" do
+    text_element_mock = mock(Nokogiri::XML::Text)
+    span_mock = mock(Nokogiri::XML::Element)
+    spans_mock = [span_mock]
+    lunch_html_mock.should_receive(:children).and_return(spans_mock)
+    span_mock.should_receive(:name).and_return('span')
+    span_mock.should_receive(:[]).with(:class).and_return('meal')
+    span_mock.should_receive(:children).and_return([text_element_mock])
+    text_element_mock.should_receive(:to_s).and_return(name)
+    Unicafe::Lunch.format_name(lunch_html_mock).should == name
   end
 
 end

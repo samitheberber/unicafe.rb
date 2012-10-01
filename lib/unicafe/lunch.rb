@@ -34,5 +34,11 @@ module Unicafe
       Date.parse date
     end
 
+    def self.format_name data
+      name_span = data.children.select{|elem| elem.name == 'span' && elem[:class] == "meal"}.first
+      text_element = name_span.children.first
+      text_element.to_s
+    end
+
   end
 end
