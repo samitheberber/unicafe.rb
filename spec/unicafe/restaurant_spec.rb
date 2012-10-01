@@ -27,8 +27,8 @@ describe Unicafe::Restaurant do
   describe "#name_to_id" do
 
     it "should give correct id for given restaurant" do
-      Unicafe::Restaurant::LIST_OF_RESTAURANTS.each do |id, name|
-        Unicafe::Restaurant.name_to_id(name).should == id
+      Unicafe::Restaurant::LIST_OF_RESTAURANTS.each do |id, r_hash|
+        Unicafe::Restaurant.name_to_id(r_hash[:name]).should == id
       end
     end
 
@@ -38,7 +38,7 @@ describe Unicafe::Restaurant do
 
   end
 
-  describe Unicafe::Restaurant::LIST_OF_RESTAURANTS do
+  describe "list of restaurants" do
 
     def check_id_name_pairs id, name
       Unicafe::Restaurant::LIST_OF_RESTAURANTS[id].should == name
@@ -46,27 +46,27 @@ describe Unicafe::Restaurant do
 
     it "should contain all defined pairs" do
       [
-        {id: 1, name: "Metsätalo"},
-        {id: 2, name: "Olivia"},
-        {id: 3, name: "Porthania"},
-        {id: 4, name: "Päärakennus"},
-        {id: 5, name: "Rotunda"},
-        {id: 6, name: "Topelias"},
-        {id: 7, name: "Valtiotiede"},
-        {id: 8, name: "Ylioppilasaukio"},
-        {id: 10, name: "Chemicum"},
-        {id: 11, name: "Exactum"},
-        {id: 12, name: "Physicum"},
-        {id: 13, name: "Meilahti"},
-        {id: 14, name: "Ruskeasuo"},
-        {id: 15, name: "Soc & kom"},
-        {id: 16, name: "Kookos"},
-        {id: 17, name: "Valdemar"},
-        {id: 18, name: "Biokeskus"},
-        {id: 19, name: "Korona"},
-        {id: 21, name: "Viikuna"},
+        {id: 1, hash: {name: "Metsätalo"}},
+        {id: 2, hash: {name: "Olivia"}},
+        {id: 3, hash: {name: "Porthania"}},
+        {id: 4, hash: {name: "Päärakennus"}},
+        {id: 5, hash: {name: "Rotunda"}},
+        {id: 6, hash: {name: "Topelias"}},
+        {id: 7, hash: {name: "Valtiotiede"}},
+        {id: 8, hash: {name: "Ylioppilasaukio"}},
+        {id: 10, hash: {name: "Chemicum", latitude: 60.205108, longitude: 24.963357}},
+        {id: 11, hash: {name: "Exactum"}},
+        {id: 12, hash: {name: "Physicum"}},
+        {id: 13, hash: {name: "Meilahti"}},
+        {id: 14, hash: {name: "Ruskeasuo"}},
+        {id: 15, hash: {name: "Soc & kom"}},
+        {id: 16, hash: {name: "Kookos"}},
+        {id: 17, hash: {name: "Valdemar"}},
+        {id: 18, hash: {name: "Biokeskus"}},
+        {id: 19, hash: {name: "Korona"}},
+        {id: 21, hash: {name: "Viikuna"}},
       ].each do |hash|
-        check_id_name_pairs hash[:id], hash[:name]
+        check_id_name_pairs hash[:id], hash[:hash]
       end
     end
 
