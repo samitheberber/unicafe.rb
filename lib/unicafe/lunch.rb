@@ -35,6 +35,7 @@ module Unicafe
 
     def self.format_lunch date, data
       self.new self.format_name(data), self.format_price(data), date
+    rescue
     end
 
     def self.parse_date date

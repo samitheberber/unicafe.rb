@@ -72,7 +72,7 @@ describe Unicafe::Lunch do
     Unicafe::Lunch.format_name(lunch_html_mock).should == name
   end
 
-  it "should format description" do
+  it "should format price" do
     lunch_html_mock.should_receive(:children).and_return(spans_mock)
     span_mock.should_receive(:name).and_return('span')
     span_mock.should_receive(:[]).with(:class).and_return('priceinfo')
