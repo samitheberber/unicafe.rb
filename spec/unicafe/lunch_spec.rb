@@ -81,4 +81,12 @@ describe Unicafe::Lunch do
     Unicafe::Lunch.format_price(lunch_html_mock).should == price
   end
 
+  context "instance" do
+
+    it "should take name, price and date" do
+      Unicafe::Lunch.new(name, price, date).should_not be_nil
+    end
+
+  end
+
 end
