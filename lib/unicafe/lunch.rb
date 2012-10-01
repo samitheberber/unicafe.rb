@@ -23,5 +23,9 @@ module Unicafe
       }
     end
 
+    def self.format_lunch date, data
+      self.new self.format_name(data), self.format_description(data), date
+    end
+
   end
 end
