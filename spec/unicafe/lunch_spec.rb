@@ -83,8 +83,18 @@ describe Unicafe::Lunch do
 
   context "instance" do
 
-    it "should take name, price and date" do
-      Unicafe::Lunch.new(name, price, date).should_not be_nil
+    let!(:lunch) {Unicafe::Lunch.new(name, price, date)}
+
+    it "should give name" do
+      lunch.name.should == name
+    end
+
+    it "should give price" do
+      lunch.price.should == price
+    end
+
+    it "should give date" do
+      lunch.date.should == date
     end
 
   end

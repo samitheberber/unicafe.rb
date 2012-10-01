@@ -4,7 +4,12 @@ require 'net/http'
 module Unicafe
   class Lunch
 
+    attr_reader :name, :price, :date
+
     def initialize name, price, date
+      @name = name
+      @price = price
+      @date = date
     end
 
     def self.lunches_for_restaurant id
