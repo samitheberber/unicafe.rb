@@ -53,4 +53,9 @@ describe Unicafe::Lunch do
     Unicafe::Lunch.format_lunch(date, lunch_html_mock).should == lunch_mock
   end
 
+  it "should parse date" do
+    date_string = "Maanantai 24.09.2012"
+    Unicafe::Lunch.parse_date(date_string).to_s.should == "2012-09-24"
+  end
+
 end

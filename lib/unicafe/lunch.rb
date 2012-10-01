@@ -27,5 +27,10 @@ module Unicafe
       self.new self.format_name(data), self.format_description(data), date
     end
 
+    def self.parse_date date
+      require 'date'
+      Date.parse date
+    end
+
   end
 end
