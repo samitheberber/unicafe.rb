@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.version       = Unicafe::VERSION
 
   gem.add_dependency 'feedzirra'
+  gem.add_dependency 'geocoder'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'fakeweb'
