@@ -4,9 +4,10 @@ require File.expand_path('../lib/unicafe/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Sami Saada"]
   gem.email         = ["sami.saada@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Gem for fetching Unicafe lunch data}
+  gem.summary       = %q{Fetches and parses Unicafe rss feeds, might even find
+                         lunch data.}
+  gem.homepage      = "https://github.com/samitheberber/unicafe"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
