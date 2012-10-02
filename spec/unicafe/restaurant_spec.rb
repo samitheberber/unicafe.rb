@@ -46,24 +46,24 @@ describe Unicafe::Restaurant do
 
     it "should contain all defined pairs" do
       [
-        {id: 1, hash: {name: "Metsätalo", latitude: "60.172577", longitude: "24.948878"}},
-        {id: 2, hash: {name: "Olivia", latitude: "60.175077", longitude: "24.952979"}},
-        {id: 3, hash: {name: "Porthania", latitude: "60.169878", longitude: "24.948669"}},
-        {id: 4, hash: {name: "Päärakennus", latitude: "60.169178", longitude: "24.949297"}},
-        {id: 5, hash: {name: "Rotunda", latitude: "60.170332", longitude: "24.950791"}},
-        {id: 6, hash: {name: "Topelias", latitude: "60.171806", longitude: "24.95067"}},
-        {id: 7, hash: {name: "Valtiotiede", latitude: "60.173897", longitude: "24.953095"}},
-        {id: 8, hash: {name: "Ylioppilasaukio", latitude: "60.169092", longitude: "24.93992"}},
-        {id: 10, hash: {name: "Chemicum", latitude: "60.205108", longitude: "24.963357"}},
-        {id: 11, hash: {name: "Exactum", latitude: "60.20509", longitude: "24.961209"}},
-        {id: 12, hash: {name: "Physicum"}},
-        {id: 13, hash: {name: "Meilahti", latitude: "60.190212", longitude: "24.908911"}},
-        {id: 14, hash: {name: "Ruskeasuo", latitude: "60.206341", longitude: "24.895871"}},
-        {id: 15, hash: {name: "Soc & kom", latitude: "60.173054", longitude: "24.95049"}},
-        {id: 16, hash: {name: "Kookos", latitude: "60.181034", longitude: "24.958652"}},
-        {id: 18, hash: {name: "Biokeskus", latitude: "60.226922", longitude: "25.013707"}},
-        {id: 19, hash: {name: "Korona", latitude: "60.226922", longitude: "25.013707"}},
-        {id: 21, hash: {name: "Viikuna", latitude: "60.23049", longitude: "25.020544"}},
+        {id: 1, hash: {name: "Metsätalo", latitude: 60.172577, longitude: 24.948878}},
+        {id: 2, hash: {name: "Olivia", latitude: 60.175077, longitude: 24.952979}},
+        {id: 3, hash: {name: "Porthania", latitude: 60.169878, longitude: 24.948669}},
+        {id: 4, hash: {name: "Päärakennus", latitude: 60.169178, longitude: 24.949297}},
+        {id: 5, hash: {name: "Rotunda", latitude: 60.170332, longitude: 24.950791}},
+        {id: 6, hash: {name: "Topelias", latitude: 60.171806, longitude: 24.95067}},
+        {id: 7, hash: {name: "Valtiotiede", latitude: 60.173897, longitude: 24.953095}},
+        {id: 8, hash: {name: "Ylioppilasaukio", latitude: 60.169092, longitude: 24.93992}},
+        {id: 10, hash: {name: "Chemicum", latitude: 60.205108, longitude: 24.963357}},
+        {id: 11, hash: {name: "Exactum", latitude: 60.20509, longitude: 24.961209}},
+        {id: 12, hash: {name: "Physicum", latitude: 60.204755, longitude: 24.963200}},
+        {id: 13, hash: {name: "Meilahti", latitude: 60.190212, longitude: 24.908911}},
+        {id: 14, hash: {name: "Ruskeasuo", latitude: 60.206341, longitude: 24.895871}},
+        {id: 15, hash: {name: "Soc & kom", latitude: 60.173054, longitude: 24.95049}},
+        {id: 16, hash: {name: "Kookos", latitude: 60.181034, longitude: 24.958652}},
+        {id: 18, hash: {name: "Biokeskus", latitude: 60.226922, longitude: 25.013707}},
+        {id: 19, hash: {name: "Korona", latitude: 60.226922, longitude: 25.013707}},
+        {id: 21, hash: {name: "Viikuna", latitude: 60.23049, longitude: 25.020544}},
       ].each do |hash|
         check_id_name_pairs hash[:id], hash[:hash]
       end
@@ -101,4 +101,36 @@ describe Unicafe::Restaurant do
 
   end
 
+  context "geocoding" do
+    let(:latitude) {60.170331}
+    let(:longitude) {24.950792}
+    let(:distance) {0.123}
+    let(:restaurants_distances_mock) {{distance => restaurant_mock}}
+
+    it "nearest should return restaurant with nearest location" do
+      Unicafe::Restaurant.should_receive(:distances).with(latitude, longitude).and_return(restaurants_distances_mock)
+      restaurants_distances_mock.should_receive(:keys).and_return([distance])
+      Unicafe::Restaurant.nearest(latitude, longitude).should == restaurant_mock
+    end
+
+    it "distances should return distances in km to each restaurant" do
+      Unicafe::Restaurant.should_receive(:find_by_id).exactly(Unicafe::Restaurant::LIST_OF_RESTAURANTS.size).and_return(restaurant_mock)
+      restaurant_mock.should_receive(:distance).with(latitude, longitude).exactly(Unicafe::Restaurant::LIST_OF_RESTAURANTS.size).and_return(distance)
+      Unicafe::Restaurant.distances(latitude, longitude)
+    end
+
+    it "should return distance in km to restaurant" do
+      restaurant_latitude, restaurant_longitude = 1.23, 1.23
+      restaurant = Unicafe::Restaurant.new(99)
+      restaurant.should_receive(:latitude).and_return(restaurant_latitude)
+      restaurant.should_receive(:longitude).and_return(restaurant_longitude)
+      Geocoder::Calculations.should_receive(:distance_between).
+        with([restaurant_latitude, restaurant_longitude],
+             [latitude, longitude],
+             :units => :km).
+        and_return(distance)
+      restaurant.distance(latitude, longitude).should == distance
+    end
+
+  end
 end
