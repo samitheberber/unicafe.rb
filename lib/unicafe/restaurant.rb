@@ -14,7 +14,7 @@ module Unicafe
       8 => {name: "Ylioppilasaukio", latitude: 60.169092, longitude: 24.93992},
       10 => {name: "Chemicum", latitude: 60.205108, longitude: 24.963357},
       11 => {name: "Exactum", latitude: 60.20509, longitude: 24.961209},
-      12 => {name: "Physicum"},
+      12 => {name: "Physicum", latitude: 60.204755, longitude: 24.963200},
       13 => {name: "Meilahti", latitude: 60.190212, longitude: 24.908911},
       14 => {name: "Ruskeasuo", latitude: 60.206341, longitude: 24.895871},
       15 => {name: "Soc & kom", latitude: 60.173054, longitude: 24.95049},
@@ -59,5 +59,8 @@ module Unicafe
     class NotFound < Exception
     end
 
+    def self.nearest(latitude, longtitude)
+      
+    end
   end
 end

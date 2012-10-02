@@ -56,7 +56,7 @@ describe Unicafe::Restaurant do
         {id: 8, hash: {name: "Ylioppilasaukio", latitude: 60.169092, longitude: 24.93992}},
         {id: 10, hash: {name: "Chemicum", latitude: 60.205108, longitude: 24.963357}},
         {id: 11, hash: {name: "Exactum", latitude: 60.20509, longitude: 24.961209}},
-        {id: 12, hash: {name: "Physicum"}},
+        {id: 12, hash: {name: "Physicum", latitude: 60.204755, longitude: 24.963200}},
         {id: 13, hash: {name: "Meilahti", latitude: 60.190212, longitude: 24.908911}},
         {id: 14, hash: {name: "Ruskeasuo", latitude: 60.206341, longitude: 24.895871}},
         {id: 15, hash: {name: "Soc & kom", latitude: 60.173054, longitude: 24.95049}},
@@ -101,4 +101,6 @@ describe Unicafe::Restaurant do
 
   end
 
+  context "geocoding" do
+  end
 end
