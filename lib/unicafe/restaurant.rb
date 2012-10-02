@@ -44,6 +44,12 @@ module Unicafe
       ::Unicafe::Lunch.lunches_for_restaurant(@id)
     end
 
+    def distance(latitude, longitude)
+      Geocoder::Calculations.distance_between([self.latitude, self.longitude],
+                                              [latitude, longitude],
+                                              :units => :km)
+    end
+
     def self.find_by_id id
       self.new id
     end
@@ -57,30 +63,17 @@ module Unicafe
     end
 
     def self.nearest(latitude, longitude)
-      near_id, near_dist = nil, nil
-
-      LIST_OF_RESTAURANTS.each do |key, hash|
-        distance = Geocoder::Calculations.distance_between([hash[:latitude], hash[:longitude]],
-                                                           [latitude, longitude])
-        if near_dist.nil? or distance < near_dist
-          near_id = key
-          near_dist = distance
-        end
-      end
-
-      self.find_by_id near_id
+      distances_with_restaurants = self.distances(latitude, longitude)
+      distances_with_restaurants[distances_with_restaurants.keys.min]
     end
 
     def self.distances(latitude, longitude)
-      retval = {}
+      distances = {}
       LIST_OF_RESTAURANTS.each do |key, hash|
-        distance = Geocoder::Calculations.distance_between([hash[:latitude], hash[:longitude]],
-                                                      [latitude, longitude],
-                                                      :units => :km)
         restaurant = self.find_by_id(key)
-        retval[distance] = restaurant
+        distances[restaurant.distance(latitude, longitude)] = restaurant
       end
-      retval
+      distances
     end
 
     class NotFound < Exception

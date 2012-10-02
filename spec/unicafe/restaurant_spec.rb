@@ -104,42 +104,33 @@ describe Unicafe::Restaurant do
   context "geocoding" do
     let(:latitude) {60.170331}
     let(:longitude) {24.950792}
-    let(:distances) {Unicafe::Restaurant.distances(latitude, longitude)}
+    let(:distance) {0.123}
+    let(:restaurants_distances_mock) {{distance => restaurant_mock}}
 
     it "nearest should return restaurant with nearest location" do
-      restaurant = Unicafe::Restaurant.nearest(latitude, longitude)
-      restaurant.name.should == Unicafe::Restaurant.find_by_id(5).name
+      Unicafe::Restaurant.should_receive(:distances).with(latitude, longitude).and_return(restaurants_distances_mock)
+      restaurants_distances_mock.should_receive(:keys).and_return([distance])
+      Unicafe::Restaurant.nearest(latitude, longitude).should == restaurant_mock
     end
 
     it "distances should return distances in km to each restaurant" do
-      expected = [
-        {name: "Metsätalo", distance: 0.27125381125240583},
-        {name: "Olivia", distance: 0.5414153313784997},
-        {name: "Porthania", distance: 0.12777370135136118},
-        {name: "Päärakennus", distance: 0.15256172402068655},
-        {name: "Rotunda", distance: 0.0001241918351063598},
-        {name: "Topelias", distance: 0.16415126635849975},
-        {name: "Valtiotiede", distance: 0.4164770966419465},
-        {name: "Ylioppilasaukio", distance: 0.6169317693546285},
-        {name: "Chemicum", distance: 3.9289156775382},
-        {name: "Exactum", distance: 3.907689767961844},
-        {name: "Physicum", distance: 3.8887487128635665},
-        {name: "Meilahti", distance: 3.2015412019032445},
-        {name: "Ruskeasuo", distance: 5.025012642110712},
-        {name: "Soc & kom", distance: 0.3032441555908767},
-        {name: "Kookos", distance: 1.2670140935623735},
-        {name: "Biokeskus", distance: 7.189295780001909},
-        {name: "Korona", distance: 7.189295780001909},
-        {name: "Viikuna", distance: 7.720428952517577},
-      ]
-
-      distances.each do |dist, restaurant|
-        expected.each do |ex|
-          if ex[:name] == restaurant.name
-            ex[:distance].should == dist
-          end
-        end
-      end
+      Unicafe::Restaurant.should_receive(:find_by_id).exactly(Unicafe::Restaurant::LIST_OF_RESTAURANTS.size).and_return(restaurant_mock)
+      restaurant_mock.should_receive(:distance).with(latitude, longitude).exactly(Unicafe::Restaurant::LIST_OF_RESTAURANTS.size).and_return(distance)
+      Unicafe::Restaurant.distances(latitude, longitude)
     end
+
+    it "should return distance in km to restaurant" do
+      restaurant_latitude, restaurant_longitude = 1.23, 1.23
+      restaurant = Unicafe::Restaurant.new(99)
+      restaurant.should_receive(:latitude).and_return(restaurant_latitude)
+      restaurant.should_receive(:longitude).and_return(restaurant_longitude)
+      Geocoder::Calculations.should_receive(:distance_between).
+        with([restaurant_latitude, restaurant_longitude],
+             [latitude, longitude],
+             :units => :km).
+        and_return(distance)
+      restaurant.distance(latitude, longitude).should == distance
+    end
+
   end
 end
