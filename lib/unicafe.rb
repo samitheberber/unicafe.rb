@@ -2,6 +2,7 @@ require "unicafe/version"
 require "unicafe/price_parser"
 require "unicafe/lunch"
 require "unicafe/restaurant"
+require "geocoder"
 
 module Unicafe
 

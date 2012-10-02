@@ -56,11 +56,34 @@ module Unicafe
       LIST_OF_RESTAURANTS.select{|key, hash| hash[:name] == name}.map{|key, hash| key}.first || raise(NotFound)
     end
 
-    class NotFound < Exception
+    def self.nearest(latitude, longitude)
+      near_id, near_dist = nil, nil
+
+      LIST_OF_RESTAURANTS.each do |key, hash|
+        distance = Geocoder::Calculations.distance_between([hash[:latitude], hash[:longitude]],
+                                                           [latitude, longitude])
+        if near_dist.nil? or distance < near_dist
+          near_id = key
+          near_dist = distance
+        end
+      end
+
+      self.find_by_id near_id
     end
 
-    def self.nearest(latitude, longtitude)
-      
+    def self.distances(latitude, longitude)
+      retval = {}
+      LIST_OF_RESTAURANTS.each do |key, hash|
+        distance = Geocoder::Calculations.distance_between([hash[:latitude], hash[:longitude]],
+                                                      [latitude, longitude],
+                                                      :units => :km)
+        restaurant = self.find_by_id(key)
+        retval[distance] = restaurant
+      end
+      retval
+    end
+
+    class NotFound < Exception
     end
   end
 end
