@@ -8,7 +8,7 @@ describe Unicafe::Lunch do
   let(:lunch_mock) {mock(Unicafe::Lunch)}
   let(:lunches_mock) {[lunch_mock]}
   let(:restaurant_data) {example_menu_xml}
-  let(:menu_uri) {"http://www.unicafe.fi/rss/fin/#{restaurant_id}/"}
+  let(:menu_uri) {"http://www.hyyravintolat.fi/rss/fin/#{restaurant_id}/"}
   let(:parsed_data) {mock(Feedzirra::Feed)}
   let(:entry_mock) {mock(Feedzirra::Parser::RSSEntry)}
   let(:entries_mock) {[entry_mock]}
