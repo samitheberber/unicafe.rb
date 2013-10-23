@@ -8,6 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Fetches and parses Unicafe rss feeds, might even find
                          lunch data.}
   gem.homepage      = "https://github.com/samitheberber/unicafe"
+  gem.license = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
